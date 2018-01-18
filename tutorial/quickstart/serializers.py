@@ -1,19 +1,16 @@
 from django.contrib.auth.models import User, Group
-from models import Company, Dish, Cook
+from models import Company, Dish,Cook
 from rest_framework import serializers
-
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ('url', 'username', 'email', 'groups')
 
-
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ('url', 'name')
-
 
 class CompanySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -23,7 +20,7 @@ class CompanySerializer(serializers.HyperlinkedModelSerializer):
 class DishSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Dish
-        fields = ('url', 'name', 'flavor','origin','price')
+        fields = ('url', 'name', 'origin')
 
 class CookSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<head><h1>Login Page</h1></head>
+</body>
+
+User:<br>
+<input type="text" id="user" ><br>
+Password:<br>
+<input type="password" id="password" ><br>
+<button onClick="authenticate()">Login</button>
+
+<script>
+function authenticate(){
+	var user = document.getElementById("user").value ;
+	var pass = document.getElementById("password").value;
+	if(user=="admin" && pass=="password123"){
+		var disp="<a href='index.html'>Home</a>";
+		document.write(disp);
+	}
+	else
+	document.write("Try again");
+	
+}
+</script>
+</body>
+</html>

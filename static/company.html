@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+ {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+ td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.btn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+    background-color: RoyalBlue;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<h1>The companies!!</h1>
+company Name <input type="text" id="company"><br><br>
+Address <input type="text" id="Add"><br><br>
+<button onClick="postcompany()">Add company</button><br><br>
+
+<script>
+Listcompany();
+function postcompany(){
+ var companyName=document.getElementById("company");
+ var companyAdd=document.getElementById("Add");
+ var jsonData = '{"name":' + JSON.stringify(companyName.value) + ',"address":' + JSON.stringify(companyAdd.value) + '}';
+ var request = new XMLHttpRequest();
+ request.open("POST", "http://localhost:8000/companies/", false);
+ request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+ request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+ request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+ request.send(jsonData); 
+ var array = JSON.parse(request.responseText);
+ console.log(array);
+ alert("data added. refresh page");
+}
+
+function readCookie(name) {
+ var nameEQ = encodeURIComponent(name) + "=";
+ var ca = document.cookie.split(';');
+ for (var i = 0; i < ca.length; i++) {
+ var c = ca[i];
+ while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+ if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+ }
+ return null;
+}
+function Listcompany(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://localhost:8000/companies/", false);
+    request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+    request.send();
+    var array = JSON.parse(request.responseText);
+    var temp="<table ><tr><th>id</th><th>Name</th><th>Address</th><th></th><th></th></tr>";
+    for(var i=0;i<array.length;i++){
+        var url = array[i].url;
+        var name = array[i].name;
+        var Address = array[i].address;
+        temp+="<tr><td>"+(i+1)+"</td><td>" + name + "</td><td>" + Address+ "</td>" +
+		"<td><button class='btn' onClick=deletecompany('"+ url +"')><i class='fa fa-trash'></i></button></td>"+
+		"<td><button class='btn' onClick=putcompany('"+ url+"')><i class='fa fa-edit'></i></button></td></tr>";      
+    }
+	
+    console.log(array);
+    temp+="</table>";
+    document.write(temp);
+}
+
+function putcompany(url){
+	var request = new XMLHttpRequest();
+    request.open("GET", url, false);
+    request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send();
+    var array = JSON.parse(request.responseText);
+	var form="<form name='myForm' onsubmit='return submitcompany('"+ url+"')'>"+
+				"name <input type='text' id='companyed' autofocus value='"+array.name+"'><br><br>"+
+			 "Address <input type='text' id='Added' autofocus value='"+array.address+"'><br><br>"+
+			 "<input type='submit' value='Confirm'></form>";
+	
+	console.log(array);
+	document.write(form);
+	
+}
+
+function submitcompany(url){
+    alert("data edited");
+	var companyName1=document.forms["myForm"]["companyed"].value;
+	var companyAdd1=document.forms["myForm"]["Added"].value;
+	var data = '{"name":' + JSON.stringify(companyName1.value) +',"address":' + JSON.stringify(companyAdd1.value) + '}';
+	var request = new XMLHttpRequest();
+	request.open("PUT", url, false);
+    request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+    request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(data);
+	alert("data edited");
+	var array = JSON.parse(request.responseText);
+	console.log(array);
+	return true;
+    
+}
+
+function deletecompany(url){
+	var request = new XMLHttpRequest();
+	request.open("DELETE", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send();
+	alert("data deleted. refresh page");
+	var array = JSON.parse(request.responseText);
+	console.log(array);
+	
+	}
+
+
+</script>
+<a href="index.html">Home</a>
+</body>
+</html>
