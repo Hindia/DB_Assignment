@@ -1,144 +1,125 @@
-	<!DOCTYPE html>
-	<html>
-	<head>
-	<meta charset="UTF-8">
-	<style>
-	 {
-		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-		border-collapse: collapse;
-		width: 100%;
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+ {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+ td, th {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #4CAF50;
+    color: white;
+}
+.btn {
+    background-color: DodgerBlue;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+    background-color: RoyalBlue;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<h1>The Groups!!</h1>
+Group Name <input type="text" id="Group"><br><br>
+<button onClick="postGroup()">Add Group</button><br><br>
+
+<script>
+ListGroup();
+function postGroup(){
+ var GroupName=document.getElementById("Group");
+ var jsonData = '{"name":' + JSON.stringify(GroupName.value) +  '}';
+ var request = new XMLHttpRequest();
+ request.open("POST", "http://localhost:8000/groups/", false);
+ request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+ request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+ request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+ request.send(jsonData); 
+ var array = JSON.parse(request.responseText);
+ console.log(array);
+ alert("data added. refresh page");
+}
+
+function readCookie(name) {
+ var nameEQ = encodeURIComponent(name) + "=";
+ var ca = document.cookie.split(';');
+ for (var i = 0; i < ca.length; i++) {
+ var c = ca[i];
+ while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+ if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+ }
+ return null;
+}
+function ListGroup(){
+    var request = new XMLHttpRequest();
+    request.open("GET", "http://localhost:8000/groups/", false);
+    request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+    request.send();
+    var array = JSON.parse(request.responseText);
+    var temp="<table ><tr><th>id</th><th>Name</th><th></th><th></th></tr>";
+    for(var i=0;i<array.length;i++){
+        var url = array[i].url;
+        var name = array[i].name;
+        temp+="<tr><td>"+(i+1)+"</td><td>" + name + "</td> "+
+		"<td><button class='btn' onClick=deleteGroup('"+ url +"')><i class='fa fa-trash'></i></button></td>"+
+		"<td><button class='btn' onClick=putGroup('"+ url+"')><i class='fa fa-edit'></i></button></td></tr>";      
+    }
+	
+    console.log(array);
+    temp+="</table>";
+    document.write(temp);
+}
+
+function putGroup(url){
+	var request = new XMLHttpRequest();
+    var newName = prompt('Please enter new name:', "Group Name");
+	var data = '{"name":' + JSON.stringify(newName)+'}';
+	request.open("PUT", url, true);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(data);
+	alert("data edited. refresh page");
+}
+
+
+function deleteGroup(url){
+	var request = new XMLHttpRequest();
+	request.open("DELETE", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    request.send();
+	alert("data deleted. refresh page");
+	var array = JSON.parse(request.responseText);
+	console.log(array);
+	
 	}
 
-	 td, th {
-		border: 1px solid #ddd;
-		padding: 8px;
-	}
 
-	 tr:nth-child(even){background-color: #f2f2f2;}
-
-	 tr:hover {background-color: #ddd;}
-
-	 th {
-		padding-top: 12px;
-		padding-bottom: 12px;
-		text-align: left;
-		background-color: #4CAF50;
-		color: white;
-	}
-	.btn {
-		background-color: DodgerBlue;
-		border: none;
-		color: white;
-		padding: 12px 16px;
-		font-size: 16px;
-		cursor: pointer;
-	}
-
-	/* Darker background on mouse-over */
-	.btn:hover {
-		background-color: RoyalBlue;
-	}
-	</style>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	</head>
-	<body>
-	<h1>The Groups!!</h1>
-	Group Name <input type="text" id="Group"><br><br>
-	<button onClick="postGroup()">Add Group</button><br><br>
-
-	<script>
-	ListGroup();
-	function postGroup(){
-	 var GroupName=document.getElementById("Group");
-	 var jsonData = '{"name":' + JSON.stringify(GroupName.value) +  '}';
-	 var request = new XMLHttpRequest();
-	 request.open("POST", "http://localhost:8000/groups/", false);
-	 request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-	 request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-	 request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	 request.send(jsonData); 
-	 var array = JSON.parse(request.responseText);
-	 console.log(array);
-	 alert("data added. refresh page");
-	}
-
-	function readCookie(name) {
-	 var nameEQ = encodeURIComponent(name) + "=";
-	 var ca = document.cookie.split(';');
-	 for (var i = 0; i < ca.length; i++) {
-	 var c = ca[i];
-	 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-	 if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
-	 }
-	 return null;
-	}
-	function ListGroup(){
-		var request = new XMLHttpRequest();
-		request.open("GET", "http://localhost:8000/groups/", false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.send();
-		var array = JSON.parse(request.responseText);
-		var temp="<table ><tr><th>id</th><th>Name</th><th></th><th></th></tr>";
-		for(var i=0;i<array.length;i++){
-			var url = array[i].url;
-			var name = array[i].name;
-			temp+="<tr><td>"+(i+1)+"</td><td>" + name + "</td> "+
-			"<td><button class='btn' onClick=deleteGroup('"+ url +"')><i class='fa fa-trash'></i></button></td>"+
-			"<td><button class='btn' onClick=putGroup('"+ url+"')><i class='fa fa-edit'></i></button></td></tr>";      
-		}
-		
-		console.log(array);
-		temp+="</table>";
-		document.write(temp);
-	}
-
-	function putGroup(url){
-		var request = new XMLHttpRequest();
-		request.open("GET", url, false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		var array = JSON.parse(request.responseText);
-		var form="name <input type='text' id='Grouped' autofocus value='"+array.name+"'><br><br>"+
-				 "<button onClick=submitGroup('"+ url+"') >Confirm</button>";
-		
-		console.log(array);
-		document.write(form);
-		
-	}
-
-	function submitGroup(url){
-		var GroupName1=document.getElementById("Grouped");;
-		var data = '{"name":' + JSON.stringify(GroupName1.value)+'}';
-		var request = new XMLHttpRequest();
-		request.open("PUT", url, true);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send(data);
-		alert("data edited");
-		var array = JSON.parse(request.responseText);
-		console.log(array);
-		
-		
-	}
-
-	function deleteGroup(url){
-		var request = new XMLHttpRequest();
-		request.open("DELETE", url, false);
-		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-		request.send();
-		alert("data deleted. refresh page");
-		var array = JSON.parse(request.responseText);
-		console.log(array);
-		
-		}
-
-
-	</script>
-	<a href="index.html">Home</a>
-	</body>
-	</html>
+</script>
+<a href="index.html">Home</a>
+</body>
+</html>
