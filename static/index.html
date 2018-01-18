@@ -1,85 +1,217 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<title>Home</title>
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+* {
+    box-sizing: border-box;
 }
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #3e8e41;
-}
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
+h2 {
     color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
+    font-family: verdana;
+    font-size: 300%;
+	text-align:center;
+
+}
+p  {
+    color: black;
+    font-family: courier;
+    font-size: 100%;
+	text-align:left;
+}
+body {
+  margin: 0;
 }
 
-.dropdown a:hover {background-color: #f1f1f1}
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
 
-.show {display:block;}
+/* Style the topnav links */
+.topnav a {
+    float: center;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 12px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Style the content */
+.content {
+    background-color: #ddd;
+    padding: 100px;
+}
+/*style the link<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Home</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+    box-sizing: border-box;
+}
+h2 {
+    color: black;
+    font-family: verdana;
+    font-size: 300%;
+	text-align:center;
+
+}
+p  {
+    color: black;
+    font-family: courier;
+    font-size: 100%;
+	text-align:left;
+}
+body {
+  margin: 0;
+}
+
+/* Style the top navigation bar */
+.topnav {
+    overflow: hidden;
+    background-color: #333;
+}
+
+/* Style the topnav links */
+.topnav a {
+    float: center;
+    display: block;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 14px 12px;
+    text-decoration: none;
+}
+
+/* Change color on hover */
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+/* Style the content */
+.content {
+    background-color: #ddd;
+    padding: 100px;
+}
+/*style the link*/
+a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+}
+/* Style the footer */
+.footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+}
 </style>
 </head>
 <body>
 
-<h2>Welcome!</h2>
-<p>Click on the button to open the dropdown menu.</p>
-
-<div class="dropdown">
-<button onclick="myFunction()" class="dropbtn">Go To</button>
-  <div id="myDropdown" class="dropdown-content">
-    <a href="user.html">Users</a>
+<div class="topnav">
+  <a href="user.html">Users</a>
 	<a href="group.html">Groups</a>
 	<a href="company.html">Companies</a>
 	<a href="cook.html">Cooks</a>
 	<a href="dish.html">Dishes</a>
-  </div>
 </div>
 
-<script>
-/* When the user clicks on the button, 
-toggle between hiding and showing the dropdown content */
-function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("show");
-}
+<div class="content">
+  <h2 >Moikka :)</h2>
+  <p >Hello there! Welcome home where you can do ANYTHING!(choose any table in this case)<br><br>
+  This is a databases and interfacing assignment which uses Django-REST framework.
+   <br>It uses our school's mysql database for saving our tables and the link to the source code can be found
+  at the link in the footer below if you are intersted.<br><br> You can choose from the options above in the navigation bar which table
+  you want to see and then you can CRUD all you want. You are here anyway so Go crazy!<br><br>Nothing fancy though, 
+  I only used html,json and js for the front end and python for the back end. Oh yeah, I is Hindia. :) </p>
+	<p>P.S. You need to be in VAMK's network to access the database.</p>
+ </div>
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-  if (!event.target.matches('.dropbtn')) {
+<div class="footer">
+  <a href="https://github.com/Hindia/DB_Assignment/tree/e1500943">Source Code</a>
+</div>
 
-    var dropdowns = document.getElementsByClassName("dropdown-content");
-    var i;
-    for (i = 0; i < dropdowns.length; i++) {
-      var openDropdown = dropdowns[i];
-      if (openDropdown.classList.contains('show')) {
-        openDropdown.classList.remove('show');
-      }
-    }
-  }
+</body>
+</html>
+*/
+a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
 }
-</script>
+a:visited {
+    color: pink;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:hover {
+    color: red;
+    background-color: transparent;
+    text-decoration: underline;
+}
+a:active {
+    color: yellow;
+    background-color: transparent;
+    text-decoration: underline;
+}
+/* Style the footer */
+.footer {
+    background-color: #f1f1f1;
+    padding: 10px;
+}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a href="user.html">Users</a>
+	<a href="group.html">Groups</a>
+	<a href="company.html">Companies</a>
+	<a href="cook.html">Cooks</a>
+	<a href="dish.html">Dishes</a>
+</div>
+
+<div class="content">
+  <h2 >Moikka :)</h2>
+  <p >Hello there! Welcome home where you can choose to do anything(choose any table in this case)<br><br>
+  This is a databases and interfacing assignment which uses Django-REST framework.
+   <br>It uses our school's mysql database for saving our tables and the link to the source code can be found
+  at the link in the footer below if you are intersted.<br><br> You can choose from the options above in the navigation bar which table
+  you want to see and then you can CRUD all you want. You are here anyway so Go crazy!<br><br>Nothing fancy though, 
+  I only used html,json and js for the front end and python for the back end. Oh yeah, I is Hindia. :) </p>
+</div>
+
+<div class="footer">
+  <a href="https://github.com/Hindia/DB_Assignment/tree/e1500943">Source Code</a>
+</div>
+
 </body>
 </html>
