@@ -1,109 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<title>Home</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<style>
-* {
-    box-sizing: border-box;
-}
-h2 {
-    color: black;
-    font-family: verdana;
-    font-size: 300%;
-	text-align:center;
+<head><h1>Login Page</h1></head>
+<title>Login</title>
+</body>
 
-}
-p  {
-    color: black;
-    font-family: courier;
-    font-size: 100%;
-	text-align:left;
-}
-body {
-  margin: 0;
-}
+User:<br>
+<input type="text" id="user" ><br>
+Password:<br>
+<input type="password" id="password" ><br>
+<button onClick="authenticate()">Login</button>
 
-/* Style the top navigation bar */
-.topnav {
-    overflow: hidden;
-    background-color: #333;
+<script>
+function authenticate(){
+	var user = document.getElementById("user").value ;
+	var pass = document.getElementById("password").value;
+	if(user=="admin" && pass=="password123"){
+		var disp="<a href='home_after_auth.html'>Home</a>";
+		document.write(disp);
+	}
+	else
+	document.write("Try again");
+	
 }
-
-/* Style the topnav links */
-.topnav a {
-    float: center;
-    display: block;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 14px 12px;
-    text-decoration: none;
-}
-
-/* Change color on hover */
-.topnav a:hover {
-    background-color: #ddd;
-    color: black;
-}
-
-/* Style the content */
-.content {
-    background-color: #ddd;
-    padding: 100px;
-}
-/*style the link*/
-a:link {
-    color: green;
-    background-color: transparent;
-    text-decoration: none;
-}
-a:visited {
-    color: pink;
-    background-color: transparent;
-    text-decoration: none;
-}
-a:hover {
-    color: red;
-    background-color: transparent;
-    text-decoration: underline;
-}
-a:active {
-    color: yellow;
-    background-color: transparent;
-    text-decoration: underline;
-}
-/* Style the footer */
-.footer {
-    background-color: #f1f1f1;
-    padding: 10px;
-}
-</style>
-</head>
-<body>
-
-<div class="topnav">
-  <a href="user.html">Users</a>
-	<a href="group.html">Groups</a>
-	<a href="company.html">Companies</a>
-	<a href="cook.html">Cooks</a>
-	<a href="dish.html">Dishes</a>
-</div>
-
-<div class="content">
-  <h2 >Moikka :)</h2>
-  <p >Hello there! Welcome home where you can do ANYTHING!(choose any table in this case)<br><br>
-  This is a databases and interfacing assignment which uses Django-REST framework.
-   <br>It uses our school's mysql database for saving our tables and the link to the source code can be found
-  at the link in the footer below if you are intersted.<br><br> You can choose from the options above in the navigation bar which table
-  you want to see and then you can CRUD all you want. You are here anyway so Go crazy!<br><br>Nothing fancy though, 
-  I only used html,json and js for the front end and python for the back end. Oh yeah, I is Hindia. :) </p>
-	<p>P.S. You need to be in VAMK's network to access the database.</p>
- </div>
-
-<div class="footer">
-  <a href="https://github.com/Hindia/DB_Assignment/tree/e1500943">Source Code</a>
-</div>
-
+</script>
 </body>
 </html>
