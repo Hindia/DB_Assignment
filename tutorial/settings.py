@@ -127,7 +127,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
  os.path.join(BASE_DIR, "static"),
- 'C:\python_django_rest\static',
+ 'C:\DB_Assignment\static',
 ]
 
 REST_FRAMEWORK = {
