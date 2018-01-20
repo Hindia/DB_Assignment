@@ -1,128 +1,124 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<style>
- {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
-    width: 100%;
-}
-
- td, th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
- tr:nth-child(even){background-color: #f2f2f2;}
-
- tr:hover {background-color: #ddd;}
-
- th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-.btn {
-    background-color: DodgerBlue;
-    border: none;
-    color: white;
-    padding: 12px 16px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-/* Darker background on mouse-over */
-.btn:hover {
-    background-color: RoyalBlue;
-}
-</style>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-</head>
-<body>
-<h1>The Cooks!!</h1>
-Cook Name <input type="text" id="Cook"><br><br>
-Experience <input type="text" id="exp"><br><br>
-<button onClick="postCook()">Add Cook</button><br><br>
-
-<script>
-ListCook();
-function postCook(){
- var CookName=document.getElementById("Cook");
- var Cookexp=document.getElementById("exp");
- var jsonData = '{"name":' + JSON.stringify(CookName.value) + ',"experience":' + JSON.stringify(Cookexp.value) + '}';
- var request = new XMLHttpRequest();
- request.open("POST", "http://localhost:8000/cooks/", false);
- request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
- request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
- request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
- request.send(jsonData); 
- var array = JSON.parse(request.responseText);
- console.log(array);
- alert("data added. refresh page");
-}
-
-function readCookie(name) {
- var nameEQ = encodeURIComponent(name) + "=";
- var ca = document.cookie.split(';');
- for (var i = 0; i < ca.length; i++) {
- var c = ca[i];
- while (c.charAt(0) === ' ') c = c.substring(1, c.length);
- if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
- }
- return null;
-}
-function ListCook(){
-    var request = new XMLHttpRequest();
-    request.open("GET", "http://localhost:8000/cooks/", false);
-    request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-    request.send();
-    var array = JSON.parse(request.responseText);
-    var temp="<table ><tr><th>id</th><th>Name</th><th>Experience</th><th></th><th></th></tr>";
-    for(var i=0;i<array.length;i++){
-        var url = array[i].url;
-        var name = array[i].name;
-        var experience = array[i].experience;
-        temp+="<tr><td>"+(i+1)+"</td><td>" + name + "</td><td>" + experience+ "</td>" +
-		"<td><button class='btn' onClick=deleteCook('"+ url +"')><i class='fa fa-trash'></i></button></td>"+
-		"<td><button class='btn' onClick=putCook('"+ url+"')><i class='fa fa-edit'></i></button></td></tr>";      
-    }
-	
-    console.log(array);
-    temp+="</table>";
-    document.write(temp);
-}
-
-function putCook(url){
-	var request = new XMLHttpRequest();
-    var newName = prompt('Please enter new name:', "Cook Name");
-	var newExp = prompt('Please enter experience level:', "Experience");
-	var data = '{"name":' + JSON.stringify(newName)+ ',"experience":' + JSON.stringify(newExp) +'}';
-	request.open("PUT", url, true);
-	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-	request.send(data);
-	alert("data edited. refresh page");
-}
-
-function deleteCook(url){
-	var request = new XMLHttpRequest();
-	request.open("DELETE", url, false);
-	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
-	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
-	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    request.send();
-	alert("data deleted. refresh page");
-	var array = JSON.parse(request.responseText);
-	console.log(array);
-	
+	<!DOCTYPE html>
+	<html>
+	<head>
+	<title>Cook</title>
+	<meta charset="UTF-8">
+	<style>
+	 {
+		font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+		border-collapse: collapse;
+		width: 100%;
 	}
 
+	 td, th {
+		border: 1px solid #ddd;
+		padding: 8px;
+	}
 
-</script>
-<a href="index.html">Home</a>
-</body>
-</html>
+	 tr:nth-child(even){background-color: #f2f2f2;}
+
+	 tr:hover {background-color: #ddd;}
+
+	 th {
+		padding-top: 12px;
+		padding-bottom: 12px;
+		text-align: left;
+		background-color: #4CAF50;
+		color: white;
+	}
+	.btn {
+		background-color: DodgerBlue;
+		border: none;
+		color: white;
+		padding: 12px 16px;
+		font-size: 16px;
+		cursor: pointer;
+	}
+
+	/* Darker background on mouse-over */
+	.btn:hover {
+		background-color: RoyalBlue;
+	}
+	</style>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	</head>
+	<body>
+	<h1>The Cooks!!</h1>
+	Cook Name <input type="text" id="Cook"><br><br>
+	Experience <input type="text" id="exp"><br><br>
+	<button onClick="postCook()">Add Cook</button><br><br>
+
+	<script>
+	ListCook();
+	function ListCook(){
+		var request = new XMLHttpRequest();
+		request.open("GET", "http://localhost:8000/cooks/", false);
+		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+		request.send();
+		var array = JSON.parse(request.responseText);
+		var temp="<table ><tr><th>id</th><th>Name</th><th>Experience</th><th></th><th></th></tr>";
+		for(var i=0;i<array.length;i++){
+			var url = array[i].url;
+			var name = array[i].name;
+			var experience = array[i].experience;
+			temp+="<tr><td>"+(i+1)+"</td><td>" + name + "</td><td>" + experience+ "</td>" +
+			"<td><button class='btn' onClick=deleteCook('"+ url +"')><i class='fa fa-trash'></i></button></td>"+
+			"<td><button class='btn' onClick=putCook('"+ url+"')><i class='fa fa-edit'></i></button></td></tr>";      
+		}
+		
+		console.log(array);
+		temp+="</table>";
+		document.write(temp);
+	}
+	
+	function postCook(){
+		 var CookName=document.getElementById("Cook");
+		 var Cookexp=document.getElementById("exp");
+		 var jsonData = '{"name":' + JSON.stringify(CookName.value) + ',"experience":' + JSON.stringify(Cookexp.value) + '}';
+		 var request = new XMLHttpRequest();
+		 request.open("POST", "http://localhost:8000/cooks/", false);
+		 request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+		 request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+		 request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		 request.send(jsonData);
+		 location.reload();
+	}
+
+	function putCook(url){
+		var request = new XMLHttpRequest();
+		var newName = prompt('Please enter new name:', "Cook Name");
+		var newExp = prompt('Please enter experience level:', "Experience");
+		var data = '{"name":' + JSON.stringify(newName)+ ',"experience":' + JSON.stringify(newExp) +'}';
+		request.open("PUT", url, false);
+		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		request.send(data);
+		location.reload();
+	}
+
+	function deleteCook(url){
+		var request = new XMLHttpRequest();
+		request.open("DELETE", url, false);
+		request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+		request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+		request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		request.send();
+		location.reload();
+		}
+		
+	function readCookie(name) {
+		 var nameEQ = encodeURIComponent(name) + "=";
+		 var ca = document.cookie.split(';');
+		 for (var i = 0; i < ca.length; i++) {
+			 var c = ca[i];
+			 while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+				if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+		}
+		 return null;
+		}
+
+	</script>
+	<a href="index.html">Home</a>
+	</body>
+	</html>
