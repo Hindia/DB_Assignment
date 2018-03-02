@@ -3,11 +3,15 @@ from rest_framework import routers
 from tutorial.quickstart import views
 
 router = routers.DefaultRouter()
-router.register(r'users', views.UserViewSet)
+router.register(r'implementations', views.ImplementationViewSet)
+router.register(r'courses', views.CourseViewSet)
+router.register(r'curriculums', views.CurriculumViewSet)
+router.register(r'degreePrograms', views.DegreeprogramViewSet)
 router.register(r'groups', views.GroupViewSet)
-router.register(r'companies', views.CompanyViewSet)
-router.register(r'dishes', views.DishViewSet)
-router.register(r'cooks', views.CookViewSet)
+router.register(r'units', views.UnitViewSet)
+router.register(r'users', views.UserViewSet)
+router.register(r'userImplementations', views.UserImplementationViewSet)
+router.register(r'usersDegreeprograms', views.UsersDegreeprogramViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browsable API.
 urlpatterns = [

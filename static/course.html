@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Course</title>
+<meta charset="UTF-8">
+<style>
+ {
+	font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+ td, th {
+	border: 1px solid #ddd;
+	padding: 8px;
+}
+
+ tr:nth-child(even){background-color: #f2f2f2;}
+
+ tr:hover {background-color: #ddd;}
+
+ th {
+	padding-top: 12px;
+	padding-bottom: 12px;
+	text-align: left;
+	background-color: #4CAF50;
+	color: white;
+}
+.btn {
+	background-color: DodgerBlue;
+	border: none;
+	color: white;
+	padding: 12px 16px;
+	font-size: 16px;
+	cursor: pointer;
+}
+
+/* Darker background on mouse-over */
+.btn:hover {
+	background-color: RoyalBlue;
+}
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<h1>The Courses</h1>
+<div id="course"></div>
+<div id="form"></div>
+<script>
+var arrayOfCourses;
+
+listCourses();postCourse();
+function listCourses(){
+	getCourses();
+	var tableContent="<table><tr><th>Course</th><th>Credit hours</th><th>Curriculum</th></tr>";
+	//console.log(arrayOfCourses);
+	for(var i=0;i<arrayOfCourses.length;i++){
+		tableContent+= "<tr><td>" + arrayOfCourses[i].coursename +"</td><td>" + arrayOfCourses[i].credithours +"</td><td>" + getCurriculum(arrayOfCourses[i].curriculumid)+"</td>";
+		//add edit and delete
+		tableContent+="<td><button class='btn' onClick=edit('" +arrayOfCourses[i].url+ "')><i class='fa fa-edit'></i></button></td><td><button class='btn' onClick=deleteC('" +arrayOfCourses[i].url+ "')><i class='fa fa-trash'></i></button></td></tr>";
+	}
+	tableContent+= "</table>";
+	//console.log(tableContent);
+	document.getElementById("course").innerHTML = tableContent;
+}
+
+function postCourse(){
+		//create form
+	var f = document.createElement("form");
+	f.setAttribute("id", "courseForm");
+	var i = document.createElement("input"); //input element, text
+	i.setAttribute('type',"text");
+	i.getAttribute('value',course.coursename);
+	i.setAttribute('name',"coursename");
+	var j = document.createElement("input"); //input element, text
+	j.setAttribute('type',"text");
+	j.getAttribute('value',course.credithours);
+	j.setAttribute('name',"credithours");
+	var l = document.createElement("label"); //label
+	l.innerHTML = "Name";
+	f.appendChild(l);
+	l.setAttribute("for",i);
+	f.appendChild(i);
+	f.appendChild(document.createElement("br"));
+	var l3 = document.createElement("label"); //label
+	l3.innerHTML = "Credit";
+	f.appendChild(l3);
+	l3.setAttribute("for",j);
+	f.appendChild(j);
+	f.appendChild(document.createElement("br"));
+	var l2 = document.createElement("label"); //label
+	l2.innerHTML = "Curriculum";
+	f.appendChild(l2);
+	var i2 = document.createElement("select");
+	i2.setAttribute('name',"curriculumid");
+	var curriculums = getCurriculums();
+	for(var i=0;i<curriculums.length;i++){
+		var o2 = document.createElement("option");
+		o2.text = curriculums[i].module_name;
+		o2.value = curriculums[i].url;
+		i2.add(o2);
+		f.appendChild(i2);
+	}
+	f.appendChild(document.createElement("br"));
+	var b = document.createElement("button"); //button
+	var url="http://127.0.0.1:8000/courses/";
+	var buttonurl = "add('" + url + "')";
+	b.setAttribute('onClick',buttonurl);
+	b. innerHTML ="Add course";
+	f.appendChild(b);
+	document.getElementById("form").appendChild(f);
+}
+
+function add(url){
+	var courseJson = {};
+	courseJson.coursename = document.getElementById("courseForm").elements["coursename"].value;
+	courseJson.credithours = document.getElementById("courseForm").elements["credithours"].value;
+	courseJson.curriculumid = document.getElementById("courseForm").elements["curriculumid"].value;
+	var request = new XMLHttpRequest();
+	request.open("POST", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(JSON.stringify(courseJson)); 
+}
+
+function getCourses(){
+	var request = new XMLHttpRequest();
+	request.open("GET", "http://localhost:8000/courses/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.send();
+	arrayOfCourses = JSON.parse(request.responseText);
+}
+
+function getCurriculums(){
+	var request = new XMLHttpRequest();
+	request.open("GET", "http://localhost:8000/curriculums/", false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.send();
+	return JSON.parse(request.responseText);
+}
+
+function getcourse(url){
+	var request = new XMLHttpRequest();
+	request.open("GET", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.send();
+	arrayOfCourses = JSON.parse(request.responseText);
+	return arrayOfCourses;
+}
+
+function getCurriculum(url){
+	var request = new XMLHttpRequest();
+	request.open("GET", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.send();
+	arrayOfCurriculum = JSON.parse(request.responseText);
+	return(arrayOfCurriculum.module_name);
+}
+
+function edit(url){
+	if(url!=null){
+		var course = getcourse(url);
+		//create form
+		var f = document.createElement("form");
+		f.setAttribute("id", "courseForm");
+		var i = document.createElement("input"); //input element, text
+		i.setAttribute('type',"text");
+		i.setAttribute('value',course.coursename);
+		i.setAttribute('name',"coursename");
+		var j = document.createElement("input"); //input element, text
+		j.setAttribute('type',"text");
+		j.setAttribute('value',course.credithours);
+		j.setAttribute('name',"credithours");
+		var h = document.createElement("input"); //input element, text
+		h.setAttribute('type',"hidden");
+		h.setAttribute('value',course.url);
+		h.setAttribute('name',"url");
+		f.appendChild(h);
+		var l = document.createElement("label"); //label
+		l.innerHTML = "Name";
+		f.appendChild(l);
+		l.setAttribute("for",i);
+		f.appendChild(i);
+		f.appendChild(document.createElement("br"));
+		var l3 = document.createElement("label"); //label
+		l3.innerHTML = "Credit";
+		f.appendChild(l3);
+		l3.setAttribute("for",j);
+		f.appendChild(j);
+		f.appendChild(document.createElement("br"));
+		var l2 = document.createElement("label"); //label
+		l2.innerHTML = "Curriculum";
+		f.appendChild(l2);
+		var i2 = document.createElement("select");
+		i2.setAttribute('name',"curriculumid");
+		var curriculums = getCurriculums();
+		for(var i=0;i<curriculums.length;i++){
+			var o2 = document.createElement("option");
+			o2.text = curriculums[i].module_name;
+			o2.value = curriculums[i].url;
+			i2.add(o2);
+			f.appendChild(i2);
+		}
+		f.appendChild(document.createElement("br"));
+		var b = document.createElement("button"); //button
+		var buttonurl = "save('" + url + "')";
+		b.setAttribute('onClick',buttonurl);
+		b. innerHTML ="Edit course";
+		f.appendChild(b);
+		document.getElementById("form").appendChild(f);
+		
+	}
+}
+
+function deleteC(url){
+	var request = new XMLHttpRequest();
+	request.open("DELETE", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send();
+	location.reload();
+}
+
+function save(url){
+	var courseJson = {};
+	courseJson.url = url;
+	courseJson.coursename = document.getElementById("courseForm").elements["coursename"].value;
+	courseJson.credithours = document.getElementById("courseForm").elements["credithours"].value;
+	courseJson.curriculumid = document.getElementById("courseForm").elements["curriculumid"].value;
+	var request = new XMLHttpRequest();
+	request.open("PUT", url, false);
+	request.setRequestHeader("Authorization", "Basic " + btoa("admin:password123"));
+	request.setRequestHeader("X-CSRFToken", readCookie("csrftoken"));
+	request.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+	request.send(JSON.stringify(courseJson)); 
+	window.location = "127.0.0.1:8000/courses/"; 
+}
+
+function readCookie(name) {
+	var nameEQ = encodeURIComponent(name) + "=";
+	var ca = document.cookie.split(';');
+	for (var i = 0; i < ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+		if (c.indexOf(nameEQ) === 0) return decodeURIComponent(c.substring(nameEQ.length, c.length));
+	}
+	return null;
+}
+</script>
+<a href="home_after_auth.html">Home</a>
+</body>
+</html>

@@ -3,14 +3,39 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 # Register your models here.
-from django.contrib.auth.models import Company
 
-admin.site.register(Company)
+from models import Implementation
 
-from models import Dish
+admin.site.register(Implementation)
 
-admin.site.register(Dish)
+from models import Course
 
-from models import Cook
+admin.site.register(Course)
 
-admin.site.register(Cook)
+from models import Curriculum
+
+admin.site.register(Curriculum)
+
+from models import Degreeprogram
+
+admin.site.register(Degreeprogram)
+
+from models import Group
+
+admin.site.register(Group)
+
+from models import Unit
+
+admin.site.register(Unit)
+
+from models import User
+
+admin.site.register(User)
+
+from models import UserImplementation
+
+admin.site.register(UserImplementation)
+
+from models import UsersDegreeprogram
+
+admin.site.register(UsersDegreeprogram)

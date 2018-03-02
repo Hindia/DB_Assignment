@@ -1,28 +1,48 @@
-from django.contrib.auth.models import User, Group
-from models import Company, Dish,Cook
+#from django.contrib.auth.models import User, Group
+from models import Implementation, Course,Curriculum, Degreeprogram, Group, Unit, User, UserImplementation, UsersDegreeprogram
 from rest_framework import serializers
 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
+class ImplementationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = User
-        fields = ('url', 'username', 'email', 'groups')
+        model = Implementation
+        fields = ('url', 'impcode', 'courseid')
+
+class CourseSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Course
+        fields = ('url', 'coursename', 'credithours', 'curriculumid')
+
+class CurriculumSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Curriculum
+        fields = ('url', 'code', 'module_name', 'year', 'groupid', 'degreeprogramid')
+
+class DegreeprogramSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Degreeprogram
+        fields = ('url', 'programcode', 'programname', 'unitid')
 
 class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
-        fields = ('url', 'name')
+        fields = ('url', 'groupcode', 'groupname')
 
-class CompanySerializer(serializers.HyperlinkedModelSerializer):
+class UnitSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Company
-        fields = ('url', 'name', 'address')
+        model = Unit
+        fields = ('url', 'unitcode', 'unitname')
 
-class DishSerializer(serializers.HyperlinkedModelSerializer):
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Dish
-        fields = ('url', 'name', 'origin')
-
-class CookSerializer(serializers.HyperlinkedModelSerializer):
+        model = User
+        fields = ('url', 'username', 'firstname', 'surname', 'groupid')
+		
+class UserImplementationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Cook
-        fields = ('url', 'name', 'experience')
+        model = UserImplementation
+        fields = ('url', 'userid', 'implementationid')
+		
+class UsersDegreeprogramSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = UsersDegreeprogram
+        fields = ('url', 'usersid', 'degreeprogramid')
