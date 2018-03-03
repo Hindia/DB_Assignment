@@ -6,4 +6,4 @@ FYI
 username: Admin
 password: password123
 
-Use the setup batch file for ease and run to run it on your browser.
+Use the setup batch file for ease and run batch file to run it on your browser.
